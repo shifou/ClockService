@@ -1,22 +1,41 @@
 import java.io.Serializable;
 
+
 public class Message implements Serializable{
 	
-	String hostname;
-	String src;
-	String des;
-	String kind;
-	String data;
-	String action;
-	boolean duplicate = false;
-	int seq;
-	
-	public Message(String hostname,String dest, String action, String kind, String data){
+
+	private static final long serialVersionUID = 2190639673375742282L;
+	public String hostname;
+	public String src;
+	public String des;
+	public String kind;
+	public String data;
+	public String action;
+	public boolean duplicate = false;
+	public int seq;
+	public int id;
+	public boolean logicalTime;
+	public LogicalTimeStamp lt;
+	public VectorTimeStamp vt;
+	public Message(String hostname,int id ,String dest, String action, String kind, String data, LogicalTimeStamp lt){
 		this.hostname=src=hostname;
 		des = dest;
 		this.action=action;
 		this.kind = kind;
 		this.data = data;
+		this.lt=lt;
+		logicalTime=true;
+		this.id=id;
+	}
+	public Message(String hostname,int id, String dest, String action, String kind, String data, VectorTimeStamp vt){
+		this.hostname=src=hostname;
+		des = dest;
+		this.action=action;
+		this.kind = kind;
+		this.data = data;
+		this.vt=vt;
+		logicalTime=false;
+		this.id=id;
 	}
 	public void set_hostname(String name){
 		this.hostname = name;
@@ -38,7 +57,11 @@ public class Message implements Serializable{
 	}
 	public String toString()
 	{
-		return src+" to "+des+" "+seq+" act: "+action+" "+kind+" dup: "+duplicate+" "+data; 
+		if(logicalTime)
+			return src+" to "+des+" "+seq+" "+lt.toString()+" act: "+action+" "+kind+" dup: "+duplicate+" "+data; 
+		else
+			return src+" to "+des+" "+seq+" "+vt.toString()+" act: "+action+" "+kind+" dup: "+duplicate+" "+data; 
+		
 	}
 
 	public String getKind() {
