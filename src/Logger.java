@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Logger {
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
-	public Vector<Message> messageRec = new Vector<Message>();
+	public static Vector<Message> messageRec = new Vector<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
 	public boolean logicalTime;
@@ -56,7 +56,7 @@ public class Logger {
 			String command = in.readLine();
 			switch (command) {
 			case "print":
-				printLog();
+				printLog(messageRec);																																										
 				break;
 			default:
 				System.err.println("wrong input!");
@@ -68,7 +68,7 @@ public class Logger {
 	{
 
 		int len = messageRec.size();
-		System.out.println("Current Message"+"\t\t"+"\t\t"+"Concurrent With"+"\t\t"+"Happened After");
+		
 		for(int i = 0; i < len; i++)
 		{
 			ArrayList<Message> happenedBefore = new ArrayList<Message>();

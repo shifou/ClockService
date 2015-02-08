@@ -14,14 +14,14 @@ public class LogicalTimeStamp {
 			Logical = logical;
 		}
 		
-		public void updateTimeStamp()
+		public void Increment()
 		{
 			Logical++;
 		}
 		
 		public void updateTimeStamp(LogicalTimeStamp base)
 		{
-			Logical = Math.max(Logical, base.getLogical())+1;
+			Logical = Math.max(Logical, base.getLogical());
 		}
 		
 		public int issueTimeStamp()
