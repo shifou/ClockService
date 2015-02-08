@@ -303,5 +303,13 @@ public class MessagePasser {
 			}
 	}
 	}
+
+	public String printTimestamp() {
+		if(this.logicalTime)
+			return this.lt.toString();
+			else
+				return this.vt.toString();
+				
+	}
 }
 
