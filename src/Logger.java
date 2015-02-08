@@ -64,26 +64,38 @@ public class Logger {
 			}
 		}
 	}
-	private static void printLog()
+	private static void printLog(Vector<Message> messageRec)
 	{
-		
-		int 
+
+		int len = messageRec.size();
+		System.out.println("Current Message"+"\t\t"+"\t\t"+"Concurrent With"+"\t\t"+"Happened After");
 		for(int i = 0; i < len; i++)
 		{
-			ArrayList<String> happenBefore = new ArrayList<String>();
-			ArrayList<String> concurrent = new ArrayList<String>();
-			ArrayList<String> happendAfter = new ArrayList<String>();
+			ArrayList<Message> happenedBefore = new ArrayList<Message>();
+			ArrayList<Message> concurrent = new ArrayList<Message>();
+			ArrayList<Message> happenedAfter = new ArrayList<Message>();
 			for(int j = 0; j < len; j++)
 			{
 				if(j != i)
 				{
-					if(vecMat.get(i).compareTo(j) == 1)
+					if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==1 )
 					{
-						happendBefore.add(messageRec.poll())
+						happenedBefore.add(messageRec.get(j));
+					}else if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==-1)
+					{
+						happenedAfter.add(messageRec.get(i));
+					}else{
+						concurrent.add(messageRec.get(i));
 					}
 				}
 				
 			}
+			System.out.println("CurrentMessage:\t"+messageRec.get(i));
+			System.out.println("\t\tHappened Before:\t\t" + happenedBefore);
+			System.out.println("\t\tConcurrent:\t\t" + happenedBefore);
+			System.out.println("\t\tHappened After:\t\t" + happenedBefore);
+			
+			
 		}
 			
 		

@@ -1,10 +1,14 @@
+import java.util.Arrays;
+
 
 public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 		private int[] Vector;
+		private int len;
 		
 		public VectorTimeStamp(int size)
 		{
 			Vector = new int[size];
+			len = size;
 		}
 
 		public int[] getVector() {
@@ -15,35 +19,38 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 			Vector = vector;
 		}
 		
-		public int Increment(int ID) // start from 0
+		public int updateTimeStamp(int currentID, int baseID, VectorTimeStamp base) // start from 0
 		{
-			if(ID < Vector.length)
+			if(currentID >= len || baseID >= len)   // ID exceeds limitation
 			{
-				Vector[ID] ++;
-				return 1;
-			}else{
 				return -1;
 			}
-		}
-		public compareTo(Message eventA, Message eventB)
-		{
-			int[] eA = eventA.vt.getVector();
-			int[] eB = eventB.vt.getVector();
-			int idA = eventA.id;
-			int idB = eventB.id;
+			for(int i = 0; i < len; i++)
+			{
+				if(currentID == i||baseID == i )
+				{
+					Vector[i] = Math.max(Vector[i], base.getVector()[i]) + 1;
+				}
+				else
+				{
+					Vector[i] = Math.max(Vector[i], base.getVector()[i]);
+				}
+			}
+			return 1;
 			
-			if((eA[idA] < eB[idA] && eA[idB] > eB[idB])||(eA[idA] > eB[idA] && eA[idB] < eB[idB]))
+		}
+		public int updateTimeStamp(int currentID)
+		{
+			if(currentID<len)
 			{
-				return "Concurrent with";
-			}else if((eA[idA] < eB[idA] && eA[idB] < eB[idB]))
+				Vector[currentID] ++;
+				return 1;
+			}else
 			{
-				return "Happened before";
-			}else{
-				return null;
+				return -1;			// id exceeds the limitation
 			}
 		}
-
-		@Override
+		
 		public int compareTo(VectorTimeStamp o) {
 			// TODO Auto-generated method stub
 			int len = Vector.length;
@@ -76,5 +83,23 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 			return 0;				// return 0 if concurrent
 			
 		}
-		
+		public void issueTimeStamp(int id)
+		{
+			for(int i=0; i<len;i++)
+			{
+				if(i == id)
+				{
+					System.out.print(Vector[i]+1);
+				}else{
+					System.out.print(Vector[i]);
+				}
+				
+			}
+		}
+		// TODO:  add resize the Vector
+		public String toString()
+		{
+			return Arrays.toString(Vector);
+		}
+
 }
