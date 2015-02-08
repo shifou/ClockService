@@ -27,7 +27,7 @@ public class Connection implements Runnable {
 		log=false;
 		messageQueue=mq;
 	}
-	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ArrayList<LogicalTimeStamp> logMat, ArrayList<VectorTimeStamp> vecMat,boolean logicalTime) throws IOException {
+	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ArrayList<LogicalTimeStamp> logMat, ArrayList<VectorTimeStamp> vecMat,boolean logicalTime) throws IOException 
 	{
 		socket = slaveSocket;
 		objOutput = out;

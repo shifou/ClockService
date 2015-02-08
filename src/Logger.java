@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -21,8 +24,9 @@ public class Logger {
 	public configFileParse config;
 	public int size;
 	public int port;
-	public Logger(String configuration_filename)
+	public Logger(String configuration_filename,boolean lt)
 	{
+		logicalTime=lt;
 		config = new configFileParse(configuration_filename);
 		filename = configuration_filename;
 		File hold  = new File(filename);
@@ -35,11 +39,33 @@ public class Logger {
 			return;
 		}
 		size = config.getSize();
+		for(int i=0;i<size;i++){
+			logMat.add(new LogicalTimeStamp());
+			vecMat.add(new VectorTimeStamp(size));
+		}
 		user = new User("logger", port,messageRec,sockets, streams,nodes,logMat,vecMat,logicalTime);
 		new Thread(user).start();
-		for(int i=0;i<size;i++){
-			logMat.add(new LogicalTimeStamp(i));
-			vecMat.add(new VectorTimeStamp(i,size));
+	
+	}
+	private static void print() {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void main(String[] args) throws IOException {
+		Logger logger = new Logger(args[0], true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		while(true)
+		{
+			String command = in.readLine();
+			switch (command) {
+			case "print":
+				print();
+				break;
+			default:
+				System.err.println("wrong input!");
+				break;
+			}
 		}
 	}
+
 }

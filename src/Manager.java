@@ -6,26 +6,32 @@ import java.io.InputStreamReader;
 public class Manager {
 	public static void main(String[] args) throws IOException, InterruptedException{
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		MessagePasser messagePasser = new MessagePasser(args[0], args[1]);
+		MessagePasser messagePasser = new MessagePasser(args[0], args[1],true);
 		int seq=0;
 		while(true){
 			System.out.println("Enter the command : send or rec");
 			String cm = in.readLine();
 			String[] hold = cm.split("#");
-			
+			messagePasser.log=false;
 			switch(hold[0]){
 				case "send":
 					if(hold.length!=5)
 					{
 						System.err.println("wrong send command!\n");
-						System.out.println("usage: send#bob#Action#kind#what is your name");
+						System.out.println("usage: send#bob#Action#kind#what is your name#y");
 						break;
 					}
 					Message message = new Message(args[1],hold[1],hold[2], hold[3],hold[4]);
 					message.set_seqNum(seq++);
+					if(hold[5].equals("#"))
+						messagePasser.log=true;
 					messagePasser.send(message);
 					break;
 				case "rec":
+					System.out.println(messagePasser.receive().toString());
+					break;
+				case "rec#":
+					messagePasser.log=true;
 					System.out.println(messagePasser.receive().toString());
 					break;
 				default:
