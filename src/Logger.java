@@ -11,7 +11,6 @@ public class Logger {
 	public ArrayList<LogicalTimeStamp> logMat = new ArrayList<LogicalTimeStamp>();
 	public ArrayList<VectorTimeStamp> vecMat = new ArrayList<VectorTimeStamp>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
-	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
 	public boolean logicalTime;
@@ -44,24 +43,35 @@ public class Logger {
 	}
 	public void printLog()
 	{
-		
-		int 
+		public LinkedHashMap<VectorTimeStamp,Message> messageRec = new LinkedHashMap<VectorTimeStamp,Message>();
+		int len = messageRec.size();
+		ArrayList<VectorTimeStamp> keys = new ArrayList<VectorTimeStamp>(messageRec.keySet());
+		System.out.println("Current Message"+"\t\t"+"\t\t"+"Concurrent With"+"\t\t"+"Happened After");
 		for(int i = 0; i < len; i++)
 		{
-			ArrayList<String> happenBefore = new ArrayList<String>();
-			ArrayList<String> concurrent = new ArrayList<String>();
-			ArrayList<String> happendAfter = new ArrayList<String>();
+			ArrayList<Message> happenedBefore = new ArrayList<Message>();
+			ArrayList<Message> concurrent = new ArrayList<Message>();
+			ArrayList<Message> happenedAfter = new ArrayList<Message>();
 			for(int j = 0; j < len; j++)
 			{
 				if(j != i)
 				{
-					if(vecMat.get(i).compareTo(j) == 1)
+					if(keys.get(i).compareTo(keys.get(j)) ==1 )
 					{
-						happendBefore.add(messageRec.poll())
+						happenedBefore.add(messageRec.get(keys.get(i)));
+					}else if(keys.get(i).compareTo(keys.get(j)) ==-1)
+					{
+						happenedAfter.add(messageRec.get(keys.get(i)));
+					}else{
+						concurrent.add(messageRec.get(keys.get(i)));
 					}
 				}
 				
 			}
+			System.out.println("Happened Before:\t\t" + happenedBefore);
+			System.out.println("Concurrent:\t\t" + happenedBefore);
+			System.out.println("Happened After:\t\t" + happenedBefore);
+			
 		}
 			
 		
