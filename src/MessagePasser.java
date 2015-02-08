@@ -19,7 +19,13 @@ public class MessagePasser {
 	public User user;
 	public configFileParse config;
 	public int port;
+	public boolean logicalTime;
+	public LogicalTimeStamp lt;
+	public VectorTimeStamp vt;
 	public long last;
+	public int nodeNum;
+	public int id;
+	public HashMap<String,Integer> u2i =new HashMap<String,Integer>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
 	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
@@ -27,7 +33,7 @@ public class MessagePasser {
 	public ConcurrentLinkedQueue<Message> delaySend = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentLinkedQueue<Message> delayRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<Message>();
-	public MessagePasser(String configuration_filename, String local_name) throws FileNotFoundException {
+	public MessagePasser(String configuration_filename, String local_name, boolean lg) throws FileNotFoundException {
 		config = new configFileParse(configuration_filename);
 		filename = configuration_filename;
 		File hold  = new File(filename);
@@ -40,8 +46,16 @@ public class MessagePasser {
 			System.out.println("can not find the user info in config");
 			return;
 		}
+		nodeNum = config.getSize();
+		id = config.getId(username);
+		u2i=config.getAllID(username);
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
+		logicalTime=lg;
+		if(this.logicalTime)
+			 lt =new LogicalTimeStamp(id);
+		else
+			vt = new VectorTimeStamp(id,nodeNum);
 		user = new User(username, port,messageRec,sockets, streams,nodes);
 		new Thread(user).start();
 	}

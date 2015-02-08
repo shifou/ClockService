@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,10 +22,36 @@ public class User implements Runnable{
 	private volatile boolean running;
 	public ConcurrentLinkedQueue messageQueue;
 	public ConcurrentHashMap<String, Socket> sk;
+	public ArrayList<LogicalTimeStamp> logMat;
+	public ArrayList<VectorTimeStamp> vecMat;
+	public boolean logicalTime;
 	public ConcurrentHashMap<String, ObjectOutputStream> st;
 	public LinkedHashMap<String, nodeInfo> nodes;
+	public boolean log;
 	public User(String name,int port,ConcurrentLinkedQueue messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes)
 	{
+		log=false;
+		this.nodes = nodes;
+		sk = sockets;
+		st= streams;
+		messageQueue=messageRec;
+		this.name=name;
+		running = true;
+        try {
+         serverSocket = new ServerSocket((short)port);
+     } catch (IOException e) {
+         e.printStackTrace();
+         System.out.println("failed to create the user "+name+" socket");
+         System.exit(0);
+     }
+        System.out.println("start User "+name+" at: "+port);
+	}
+	public User(String name,int port,ConcurrentLinkedQueue messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes,ArrayList<LogicalTimeStamp> logMat,ArrayList<VectorTimeStamp> vecMat,boolean logicalTime)
+	{
+		log=true;
+		this.logMat=logMat;
+		this.vecMat=vecMat;
+		this.logicalTime=logicalTime;
 		this.nodes = nodes;
 		sk = sockets;
 		st= streams;
@@ -71,7 +98,10 @@ public class User implements Runnable{
             sk.put(name, slaveSocket);
             st.put(name, out);
 			Connection handler;
+			if(log==false)
              handler = new Connection(slaveSocket,out,objInput,messageQueue);
+			else
+				handler = new Connection(slaveSocket,out,objInput,logMat,vecMat,logicalTime);
              //System.out.println(slaveSocket.getInetAddress()+"\t"+slaveSocket.getPort());
 				new Thread(handler).start();
 	           // System.out.println("begin send");
