@@ -42,4 +42,28 @@ public class Logger {
 			vecMat.add(new VectorTimeStamp(i,size));
 		}
 	}
+	public void printLog()
+	{
+		
+		int 
+		for(int i = 0; i < len; i++)
+		{
+			ArrayList<String> happenBefore = new ArrayList<String>();
+			ArrayList<String> concurrent = new ArrayList<String>();
+			ArrayList<String> happendAfter = new ArrayList<String>();
+			for(int j = 0; j < len; j++)
+			{
+				if(j != i)
+				{
+					if(vecMat.get(i).compareTo(j) == 1)
+					{
+						happendBefore.add(messageRec.poll())
+					}
+				}
+				
+			}
+		}
+			
+		
+	}
 }

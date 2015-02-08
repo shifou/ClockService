@@ -25,7 +25,7 @@ public class MessagePasser {
 	public long last;
 	public int nodeNum;
 	public int id;
-	public HashMap<String,Integer> u2i =new HashMap<String,Integer>();
+	public LinkedHashMap<String,Integer> u2i =new LinkedHashMap<String,Integer>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
 	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
@@ -46,16 +46,16 @@ public class MessagePasser {
 			System.out.println("can not find the user info in config");
 			return;
 		}
-		nodeNum = config.getSize();
-		id = config.getId(username);
-		u2i=config.getAllID(username);
+		nodeNum = config.getSize();  // starts from 1;
+		id = config.getId(username); // ID starts from 0, if can't find return -1
+		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
 		logicalTime=lg;
 		if(this.logicalTime)
-			 lt =new LogicalTimeStamp(id);
+			 lt =new LogicalTimeStamp();
 		else
-			vt = new VectorTimeStamp(id,nodeNum);
+			vt = new VectorTimeStamp(nodeNum);
 		user = new User(username, port,messageRec,sockets, streams,nodes);
 		new Thread(user).start();
 	}
