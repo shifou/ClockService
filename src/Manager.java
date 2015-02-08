@@ -23,7 +23,7 @@ public class Manager {
 					}
 					Message message = new Message(args[1],hold[1],hold[2], hold[3],hold[4]);
 					message.set_seqNum(seq++);
-					if(hold[5].equals("#"))
+					if(hold[5].equals("y"))
 						messagePasser.log=true;
 					messagePasser.send(message);
 					break;

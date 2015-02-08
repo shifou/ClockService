@@ -132,8 +132,7 @@ public class MessagePasser {
 		}
 		String hold = config.sendRule(mes);
 		//System.out.println(hold+"-----");
-		if(this.log)
-			LogSendEvent(mes,this.logicalTime);
+		
 		mes.id=u2i.get(mes.src);
 		mes.logicalTime=this.logicalTime;
 		if(this.logicalTime)
@@ -146,6 +145,8 @@ public class MessagePasser {
 			this.vt.Increment(id);
 			mes.vt=this.vt;
 		}
+		if(this.log)
+			LogSendEvent(mes,this.logicalTime);
 		switch(hold){
 			case "drop":
 				System.out.println("drop");
@@ -169,22 +170,12 @@ public class MessagePasser {
 
 	private void LogSendEvent(Message mes,boolean lt) {
 
-			mes.id=u2i.get(mes.src);
+			//mes.id=u2i.get(mes.src);
 			mes.src=mes.src+" "+mes.des;
 			mes.des="logger";
-			mes.logicalTime=lt;
-			if(lt)
-			{
-				this.lt.Increment();
-				mes.lt=this.lt;
-					sendMessage(mes);
-			}
-			else
-			{
-				this.vt.Increment(id);
-				mes.vt=this.vt;
+			//mes.logicalTime=lt;
 				sendMessage(mes);
-			}
+			
 	}
 
 	private void sendMessage(Message mes) {
@@ -238,7 +229,6 @@ public class MessagePasser {
 	}
 
 	private void logRecEvent(Message mes) {
-		mes.id=u2i.get(mes.src);
 		mes.src=mes.src+" "+mes.des;
 		mes.des="logger";
 		if(mes.logicalTime)
