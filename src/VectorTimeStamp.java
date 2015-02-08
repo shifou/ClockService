@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 
 public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 		private int[] Vector;
@@ -81,5 +83,23 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 			return 0;				// return 0 if concurrent
 			
 		}
+		public void issueTimeStamp(int id)
+		{
+			for(int i=0; i<len;i++)
+			{
+				if(i == id)
+				{
+					System.out.print(Vector[i]+1);
+				}else{
+					System.out.print(Vector[i]);
+				}
+				
+			}
+		}
 		// TODO:  add resize the Vector
+		public String toString()
+		{
+			return Arrays.toString(Vector);
+		}
+
 }

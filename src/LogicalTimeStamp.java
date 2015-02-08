@@ -14,9 +14,14 @@ public class LogicalTimeStamp {
 			Logical = logical;
 		}
 		
-		public void Increment()
+		public void updateTimeStamp()
 		{
 			Logical++;
+		}
+		
+		public void updateTimeStamp(LogicalTimeStamp base)
+		{
+			Logical = Math.max(Logical, base.getLogical())+1;
 		}
 		
 		public int issueTimeStamp()
@@ -32,5 +37,9 @@ public class LogicalTimeStamp {
 			}else{
 				return null;
 			}
+		}
+		public String toString()
+		{
+			return Integer.toString(Logical);
 		}
 }

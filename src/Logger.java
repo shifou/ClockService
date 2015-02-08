@@ -14,10 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Logger {
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
-<<<<<<< HEAD
-=======
 	public Vector<Message> messageRec = new Vector<Message>();
->>>>>>> dfdcedbb0ff67390750dbc7ba0c524c9ea8abffe
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
 	public boolean logicalTime;
@@ -67,11 +64,10 @@ public class Logger {
 			}
 		}
 	}
-	private static void printLog()
+	private static void printLog(Vector<Message> messageRec)
 	{
-		public LinkedHashMap<VectorTimeStamp,Message> messageRec = new LinkedHashMap<VectorTimeStamp,Message>();
+
 		int len = messageRec.size();
-		ArrayList<VectorTimeStamp> keys = new ArrayList<VectorTimeStamp>(messageRec.keySet());
 		System.out.println("Current Message"+"\t\t"+"\t\t"+"Concurrent With"+"\t\t"+"Happened After");
 		for(int i = 0; i < len; i++)
 		{
@@ -82,21 +78,23 @@ public class Logger {
 			{
 				if(j != i)
 				{
-					if(keys.get(i).compareTo(keys.get(j)) ==1 )
+					if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==1 )
 					{
-						happenedBefore.add(messageRec.get(keys.get(i)));
-					}else if(keys.get(i).compareTo(keys.get(j)) ==-1)
+						happenedBefore.add(messageRec.get(j));
+					}else if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==-1)
 					{
-						happenedAfter.add(messageRec.get(keys.get(i)));
+						happenedAfter.add(messageRec.get(i));
 					}else{
-						concurrent.add(messageRec.get(keys.get(i)));
+						concurrent.add(messageRec.get(i));
 					}
 				}
 				
 			}
-			System.out.println("Happened Before:\t\t" + happenedBefore);
-			System.out.println("Concurrent:\t\t" + happenedBefore);
-			System.out.println("Happened After:\t\t" + happenedBefore);
+			System.out.println("CurrentMessage:\t"+messageRec.get(i));
+			System.out.println("\t\tHappened Before:\t\t" + happenedBefore);
+			System.out.println("\t\tConcurrent:\t\t" + happenedBefore);
+			System.out.println("\t\tHappened After:\t\t" + happenedBefore);
+			
 			
 		}
 			

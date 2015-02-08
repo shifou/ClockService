@@ -252,11 +252,11 @@ public class MessagePasser {
 			Message mes = messages.poll();
 			if(mes.logicalTime)
 			{
-				this.lt.update(mes.lt);
+				this.lt.updateTimeStamp(mes.lt);
 			}
 			else
 			{
-				this.vt=update(mes.vt);
+				this.vt.updateTimeStamp(mes.vt);
 			}
 			if(log)
 			{
