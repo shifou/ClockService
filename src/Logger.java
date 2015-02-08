@@ -48,6 +48,8 @@ public class Logger {
 		new Thread(user).start();
 	
 	}
+	
+	
 	public static void main(String[] args) throws IOException {
 		Logger logger = new Logger(args[0], true);
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
