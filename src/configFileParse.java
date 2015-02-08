@@ -297,7 +297,7 @@ public class configFileParse {
 				int i = 0;
 				for(LinkedHashMap<String,Object> tmp : NodeInfo)
 				{
-					if(!tmp.get("name").equals("Logger")){
+					if(!tmp.get("name").equals("logger")){
 						nameID.put((String) tmp.get("name"), Integer.valueOf(i++));
 					}
 				}

@@ -55,6 +55,10 @@ public class Logger {
 	private static void printLog(Vector<Message> messageRec)
 	{
 
+		if(messageRec == null || messageRec.size() == 0)
+		{
+			System.out.println("Nothing has been logged!");
+		}
 		int len = messageRec.size();
 		
 		for(int i = 0; i < len; i++)
@@ -79,9 +83,18 @@ public class Logger {
 				
 			}
 			System.out.println("CurrentMessage:\t"+messageRec.get(i));
-			System.out.println("\t\tHappened Before:\t\t" + happenedBefore);
-			System.out.println("\t\tConcurrent:\t\t" + happenedBefore);
-			System.out.println("\t\tHappened After:\t\t" + happenedBefore);
+			if(happenedBefore != null)
+			{
+				System.out.println("\t\tHappened Before:\t\t" + happenedBefore);
+			}
+			if(concurrent != null){
+				System.out.println("\t\tConcurrent:\t\t" + concurrent);
+			}
+			if(happenedAfter != null)
+			{
+				System.out.println("\t\tHappened After:\t\t" + happenedAfter);
+			}
+			
 			
 			
 		}
