@@ -24,6 +24,7 @@ public class Message implements Serializable{
 		this.kind = kind;
 		this.data = data;
 	}
+	/*
 	public Message(String hostname,int id, String dest, String action, String kind, String data, VectorTimeStamp vt){
 		this.hostname=src=hostname;
 		des = dest;
@@ -34,6 +35,7 @@ public class Message implements Serializable{
 		logicalTime=false;
 		this.id=id;
 	}
+	*/
 	public void set_hostname(String name){
 		this.hostname = name;
 	}

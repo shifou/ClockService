@@ -50,6 +50,11 @@ public class MessagePasser {
 		log=false;
 		nodeNum = config.getSize();  // starts from 1;
 		id = config.getId(username); // ID starts from 0, if can't find return -1
+		if(id==-1)
+		{
+			System.out.println("can not find the user");
+			return;
+		}
 		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
@@ -101,6 +106,13 @@ public class MessagePasser {
 			System.out.println("can not find the user info in config");
 			return false;
 		}
+		id = config.getId(username); // ID starts from 0, if can't find return -1
+		if(id==-1)
+		{
+			System.out.println("can not find the user");
+			return false;
+		}
+		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		sockets.clear();
 		streams.clear();
@@ -120,6 +132,20 @@ public class MessagePasser {
 		}
 		String hold = config.sendRule(mes);
 		//System.out.println(hold+"-----");
+		if(this.log)
+			LogSendEvent(mes,this.logicalTime);
+		mes.id=u2i.get(mes.src);
+		mes.logicalTime=this.logicalTime;
+		if(this.logicalTime)
+		{
+			this.lt.Increment();
+			mes.lt=this.lt;
+		}
+		else
+		{
+			this.vt.Increment(id);
+			mes.vt=this.vt;
+		}
 		switch(hold){
 			case "drop":
 				System.out.println("drop");
@@ -140,6 +166,26 @@ public class MessagePasser {
 		}
 	}
 
+
+	private void LogSendEvent(Message mes,boolean lt) {
+
+			mes.id=u2i.get(mes.src);
+			mes.src=mes.src+" "+mes.des;
+			mes.des="logger";
+			mes.logicalTime=lt;
+			if(lt)
+			{
+				this.lt.Increment();
+				mes.lt=this.lt;
+					sendMessage(mes);
+			}
+			else
+			{
+				this.vt.Increment(id);
+				mes.vt=this.vt;
+				sendMessage(mes);
+			}
+	}
 
 	private void sendMessage(Message mes) {
 		// TODO Auto-generated method stub
@@ -181,20 +227,51 @@ public class MessagePasser {
 			System.err.println("send fail");
 			return;
 		}
+		if(mes.des.equals("logger")==false)
+		{
 		while(!delaySend.isEmpty())
 		{
 			sendMessage(delaySend.poll());
 		}
-		
+		}
 		
 	}
 
+	private void logRecEvent(Message mes) {
+		mes.id=u2i.get(mes.src);
+		mes.src=mes.src+" "+mes.des;
+		mes.des="logger";
+		if(mes.logicalTime)
+		{
+			this.lt.Increment();
+			mes.lt=this.lt;
+				sendMessage(mes);
+		}
+		else
+		{
+			this.vt.Increment(id);
+			mes.vt=this.vt;
+			sendMessage(mes);
+		}
+	}
 	Message receive() throws FileNotFoundException {
 		System.out.println("reread: "+reconfig());
 
 		receiveMessage();
 		if(!messages.isEmpty()){
 			Message mes = messages.poll();
+			if(mes.logicalTime)
+			{
+				this.lt.update(mes.lt);
+			}
+			else
+			{
+				this.vt=update(mes.vt);
+			}
+			if(log)
+			{
+				logRecEvent(mes);
+			}
 			return mes;
 		}
 		else{
@@ -203,6 +280,7 @@ public class MessagePasser {
 		
 		
 	}
+
 
 	private void receiveMessage() {
 		Message mes;
