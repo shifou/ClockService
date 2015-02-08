@@ -231,18 +231,7 @@ public class MessagePasser {
 	private void logRecEvent(Message mes) {
 		mes.src=mes.src+" "+mes.des;
 		mes.des="logger";
-		if(mes.logicalTime)
-		{
-			this.lt.Increment();
-			mes.lt=this.lt;
-				sendMessage(mes);
-		}
-		else
-		{
-			this.vt.Increment(id);
-			mes.vt=this.vt;
-			sendMessage(mes);
-		}
+		sendMessage(mes);
 	}
 	Message receive() throws FileNotFoundException {
 		System.out.println("reread: "+reconfig());
@@ -253,10 +242,14 @@ public class MessagePasser {
 			if(mes.logicalTime)
 			{
 				this.lt.updateTimeStamp(mes.lt);
+				this.lt.Increment();
+				mes.lt=this.lt;
 			}
 			else
 			{
 				this.vt.updateTimeStamp(mes.vt);
+				this.vt.Increment(id);
+				mes.vt=this.vt;
 			}
 			if(log)
 			{
@@ -267,11 +260,7 @@ public class MessagePasser {
 		else{
 			return new Message(null,null, null, null,"no message received");
 		}
-		
-		
 	}
-
-
 	private void receiveMessage() {
 		Message mes;
 		if(!messageRec.isEmpty()){
