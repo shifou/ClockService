@@ -6,11 +6,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 public class Connection implements Runnable {
 	private Socket socket;
 	ConcurrentLinkedQueue messageQueue;
 	private volatile boolean running;
+	public Vector<Message> messageRec = new Vector<Message>();
 	private ObjectInputStream objInput;
 	private ObjectOutputStream objOutput;
 	public ArrayList<LogicalTimeStamp> logMat;
@@ -27,15 +29,14 @@ public class Connection implements Runnable {
 		log=false;
 		messageQueue=mq;
 	}
-	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ArrayList<LogicalTimeStamp> logMat, ArrayList<VectorTimeStamp> vecMat,boolean logicalTime) throws IOException {
+	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, Vector<Message> messageRec,boolean logicalTime) throws IOException 
 	{
 		socket = slaveSocket;
 		objOutput = out;
 		objOutput.flush();
 		objInput = objInput2;
 		running=true;
-		this.logMat=logMat;
-		this.vecMat=vecMat;
+		this.messageRec=messageRec;
 		this.logicalTime=logicalTime;
 		log=true;
 		
@@ -51,14 +52,7 @@ public class Connection implements Runnable {
 						messageQueue.offer(mes);
 					else
 					{
-						if(this.logicalTime)
-						{
-							
-						}
-						else
-						{
-							
-						}
+						messageRec.add(mes);
 					}
 					
 				} catch (ClassNotFoundException e) {

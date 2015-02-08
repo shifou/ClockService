@@ -25,6 +25,7 @@ public class MessagePasser {
 	public long last;
 	public int nodeNum;
 	public int id;
+	public boolean log;
 	public LinkedHashMap<String,Integer> u2i =new LinkedHashMap<String,Integer>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
 	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
@@ -33,7 +34,7 @@ public class MessagePasser {
 	public ConcurrentLinkedQueue<Message> delaySend = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentLinkedQueue<Message> delayRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentLinkedQueue<Message> messages = new ConcurrentLinkedQueue<Message>();
-	public MessagePasser(String configuration_filename, String local_name, boolean lg) throws FileNotFoundException {
+	public MessagePasser(String configuration_filename, String local_name,boolean lg) throws FileNotFoundException {
 		config = new configFileParse(configuration_filename);
 		filename = configuration_filename;
 		File hold  = new File(filename);
@@ -46,8 +47,14 @@ public class MessagePasser {
 			System.out.println("can not find the user info in config");
 			return;
 		}
+		log=false;
 		nodeNum = config.getSize();  // starts from 1;
 		id = config.getId(username); // ID starts from 0, if can't find return -1
+		if(id==-1)
+		{
+			System.out.println("can not find the user");
+			return;
+		}
 		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
@@ -99,6 +106,13 @@ public class MessagePasser {
 			System.out.println("can not find the user info in config");
 			return false;
 		}
+		id = config.getId(username); // ID starts from 0, if can't find return -1
+		if(id==-1)
+		{
+			System.out.println("can not find the user");
+			return false;
+		}
+		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		sockets.clear();
 		streams.clear();
@@ -118,6 +132,21 @@ public class MessagePasser {
 		}
 		String hold = config.sendRule(mes);
 		//System.out.println(hold+"-----");
+		
+		mes.id=u2i.get(mes.src);
+		mes.logicalTime=this.logicalTime;
+		if(this.logicalTime)
+		{
+			this.lt.Increment();
+			mes.lt=this.lt;
+		}
+		else
+		{
+			this.vt.Increment(id);
+			mes.vt=this.vt;
+		}
+		if(this.log)
+			LogSendEvent(mes,this.logicalTime);
 		switch(hold){
 			case "drop":
 				System.out.println("drop");
@@ -138,6 +167,16 @@ public class MessagePasser {
 		}
 	}
 
+
+	private void LogSendEvent(Message mes,boolean lt) {
+
+			//mes.id=u2i.get(mes.src);
+			mes.src=mes.src+" "+mes.des;
+			mes.des="logger";
+			//mes.logicalTime=lt;
+				sendMessage(mes);
+			
+	}
 
 	private void sendMessage(Message mes) {
 		// TODO Auto-generated method stub
@@ -179,20 +218,50 @@ public class MessagePasser {
 			System.err.println("send fail");
 			return;
 		}
+		if(mes.des.equals("logger")==false)
+		{
 		while(!delaySend.isEmpty())
 		{
 			sendMessage(delaySend.poll());
 		}
-		
+		}
 		
 	}
 
+	private void logRecEvent(Message mes) {
+		mes.src=mes.src+" "+mes.des;
+		mes.des="logger";
+		if(mes.logicalTime)
+		{
+			this.lt.Increment();
+			mes.lt=this.lt;
+				sendMessage(mes);
+		}
+		else
+		{
+			this.vt.Increment(id);
+			mes.vt=this.vt;
+			sendMessage(mes);
+		}
+	}
 	Message receive() throws FileNotFoundException {
 		System.out.println("reread: "+reconfig());
 
 		receiveMessage();
 		if(!messages.isEmpty()){
 			Message mes = messages.poll();
+			if(mes.logicalTime)
+			{
+				this.lt.update(mes.lt);
+			}
+			else
+			{
+				this.vt=update(mes.vt);
+			}
+			if(log)
+			{
+				logRecEvent(mes);
+			}
 			return mes;
 		}
 		else{
@@ -201,6 +270,7 @@ public class MessagePasser {
 		
 		
 	}
+
 
 	private void receiveMessage() {
 		Message mes;

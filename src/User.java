@@ -9,6 +9,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -22,8 +23,7 @@ public class User implements Runnable{
 	private volatile boolean running;
 	public ConcurrentLinkedQueue messageQueue;
 	public ConcurrentHashMap<String, Socket> sk;
-	public ArrayList<LogicalTimeStamp> logMat;
-	public ArrayList<VectorTimeStamp> vecMat;
+	public Vector<Message> messageRec = new Vector<Message>();
 	public boolean logicalTime;
 	public ConcurrentHashMap<String, ObjectOutputStream> st;
 	public LinkedHashMap<String, nodeInfo> nodes;
@@ -46,16 +46,14 @@ public class User implements Runnable{
      }
         System.out.println("start User "+name+" at: "+port);
 	}
-	public User(String name,int port,ConcurrentLinkedQueue messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes,ArrayList<LogicalTimeStamp> logMat,ArrayList<VectorTimeStamp> vecMat,boolean logicalTime)
+	public User(String name,int port,Vector messageRec, ConcurrentHashMap<String, Socket> sockets, ConcurrentHashMap<String, ObjectOutputStream> streams, LinkedHashMap<String, nodeInfo> nodes,boolean logicalTime)
 	{
 		log=true;
-		this.logMat=logMat;
-		this.vecMat=vecMat;
 		this.logicalTime=logicalTime;
 		this.nodes = nodes;
 		sk = sockets;
 		st= streams;
-		messageQueue=messageRec;
+		this.messageRec=messageRec;
 		this.name=name;
 		running = true;
         try {
@@ -101,7 +99,7 @@ public class User implements Runnable{
 			if(log==false)
              handler = new Connection(slaveSocket,out,objInput,messageQueue);
 			else
-				handler = new Connection(slaveSocket,out,objInput,logMat,vecMat,logicalTime);
+				handler = new Connection(slaveSocket,out,objInput,this.messageRec,logicalTime);
              //System.out.println(slaveSocket.getInetAddress()+"\t"+slaveSocket.getPort());
 				new Thread(handler).start();
 	           // System.out.println("begin send");

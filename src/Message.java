@@ -17,16 +17,14 @@ public class Message implements Serializable{
 	public boolean logicalTime;
 	public LogicalTimeStamp lt;
 	public VectorTimeStamp vt;
-	public Message(String hostname,int id ,String dest, String action, String kind, String data, LogicalTimeStamp lt){
+	public Message(String hostname,String dest, String action, String kind, String data){
 		this.hostname=src=hostname;
 		des = dest;
 		this.action=action;
 		this.kind = kind;
 		this.data = data;
-		this.lt=lt;
-		logicalTime=true;
-		this.id=id;
 	}
+	/*
 	public Message(String hostname,int id, String dest, String action, String kind, String data, VectorTimeStamp vt){
 		this.hostname=src=hostname;
 		des = dest;
@@ -37,6 +35,7 @@ public class Message implements Serializable{
 		logicalTime=false;
 		this.id=id;
 	}
+	*/
 	public void set_hostname(String name){
 		this.hostname = name;
 	}

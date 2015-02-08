@@ -1,16 +1,23 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class Logger {
-	public ArrayList<LogicalTimeStamp> logMat = new ArrayList<LogicalTimeStamp>();
-	public ArrayList<VectorTimeStamp> vecMat = new ArrayList<VectorTimeStamp>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
+<<<<<<< HEAD
+=======
+	public Vector<Message> messageRec = new Vector<Message>();
+>>>>>>> dfdcedbb0ff67390750dbc7ba0c524c9ea8abffe
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
 	public boolean logicalTime;
@@ -20,9 +27,15 @@ public class Logger {
 	public configFileParse config;
 	public int size;
 	public int port;
-	public Logger(String configuration_filename)
+	public Logger(String configuration_filename,boolean lt)
 	{
-		config = new configFileParse(configuration_filename);
+		logicalTime=lt;
+		try {
+			config = new configFileParse(configuration_filename);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		filename = configuration_filename;
 		File hold  = new File(filename);
 		last=hold.lastModified();
@@ -34,14 +47,27 @@ public class Logger {
 			return;
 		}
 		size = config.getSize();
-		user = new User("logger", port,messageRec,sockets, streams,nodes,logMat,vecMat,logicalTime);
+		user = new User("logger", port,messageRec,sockets, streams,nodes,logicalTime);
 		new Thread(user).start();
-		for(int i=0;i<size;i++){
-			logMat.add(new LogicalTimeStamp(i));
-			vecMat.add(new VectorTimeStamp(i,size));
+	
+	}
+	public static void main(String[] args) throws IOException {
+		Logger logger = new Logger(args[0], true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		while(true)
+		{
+			String command = in.readLine();
+			switch (command) {
+			case "print":
+				printLog();
+				break;
+			default:
+				System.err.println("wrong input!");
+				break;
+			}
 		}
 	}
-	public void printLog()
+	private static void printLog()
 	{
 		public LinkedHashMap<VectorTimeStamp,Message> messageRec = new LinkedHashMap<VectorTimeStamp,Message>();
 		int len = messageRec.size();
