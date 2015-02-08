@@ -8,7 +8,7 @@ configuration :
 - name : charlie
   ip   : 127.0.0.1
   port : 12355
-- name : lisa
+- name : logger
   ip   : 127.0.0.1
   port : 12644
 

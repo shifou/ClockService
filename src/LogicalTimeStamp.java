@@ -1,5 +1,9 @@
+import java.io.Serializable;
 
-public class LogicalTimeStamp {
+
+public class LogicalTimeStamp implements Serializable{
+
+	private static final long serialVersionUID = 3185670617192875966L;
 		private int Logical;
 
 		

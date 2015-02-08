@@ -1,7 +1,10 @@
+import java.io.Serializable;
 import java.util.Arrays;
 
 
-public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
+public class VectorTimeStamp implements Comparable<VectorTimeStamp>,Serializable {
+
+	private static final long serialVersionUID = 385994735238873832L;
 		private int[] Vector;
 		private int len;
 		
