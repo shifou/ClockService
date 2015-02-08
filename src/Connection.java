@@ -23,7 +23,7 @@ public class Connection implements Runnable {
 	public boolean logicalTime;
 	public String name;
 	public boolean log;
-	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq) throws IOException {
+	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq, ConcurrentHashMap<String, Socket> sk, ConcurrentHashMap<String, ObjectOutputStream> st) throws IOException {
 		// TODO Auto-generated constructor stub
 		socket = slaveSocket;
 		objOutput = out;
@@ -32,10 +32,14 @@ public class Connection implements Runnable {
 		objInput = objInput2;
 		running=true;
 		log=false;
+		this.sk=sk;
+		this.st=st;
 		messageQueue=mq;
 	}
-	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, Vector<Message> messageRec,boolean logicalTime) throws IOException 
+	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, Vector<Message> messageRec,boolean logicalTime, ConcurrentHashMap<String, Socket> sk2, ConcurrentHashMap<String, ObjectOutputStream> st2) throws IOException 
 	{
+		sk=sk2;
+		st=st2;
 		this.name=name;
 		socket = slaveSocket;
 		objOutput = out;

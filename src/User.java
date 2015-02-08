@@ -98,9 +98,9 @@ public class User implements Runnable{
             st.put(name, out);
 			Connection handler;
 			if(log==false)
-             handler = new Connection(name,slaveSocket,out,objInput,messageQueue);
+             handler = new Connection(name,slaveSocket,out,objInput,messageQueue,sk,st);
 			else
-				handler = new Connection(name,slaveSocket,out,objInput,this.messageRec,logicalTime);
+				handler = new Connection(name,slaveSocket,out,objInput,this.messageRec,logicalTime,sk,st);
              //System.out.println(slaveSocket.getInetAddress()+"\t"+slaveSocket.getPort());
 				new Thread(handler).start();
 	           // System.out.println("begin send");

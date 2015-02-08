@@ -195,11 +195,11 @@ public class MessagePasser {
 				 Connection handler;
 				 out.writeObject(username);
 				 //out.writeChars(this.username);
-	             handler = new Connection(mes.des,sendd,out,objInput,messageRec);
+	             handler = new Connection(mes.des,sendd,out,objInput,messageRec,sockets,streams);
 	             new Thread(handler).start();
 		         
 			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
+				System.out.println("can not establish connection");
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
