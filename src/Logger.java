@@ -50,6 +50,8 @@ public class Logger {
 	
 	}
 	
+
+	
 	private static void printLog(Vector<Message> messageRec)
 	{
 
