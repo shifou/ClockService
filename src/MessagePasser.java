@@ -145,8 +145,6 @@ public class MessagePasser {
 			this.vt.Increment(id);
 			mes.vt=this.vt;
 		}
-		if(this.log)
-			LogSendEvent(mes,this.logicalTime);
 		switch(hold){
 			case "drop":
 				System.out.println("drop");
@@ -165,6 +163,9 @@ public class MessagePasser {
 				sendMessage(mes);
 				break;
 		}
+		if(this.log)
+			LogSendEvent(mes,this.logicalTime);
+	
 	}
 
 
