@@ -26,7 +26,7 @@ public class MessagePasser {
 	public int nodeNum;
 	public int id;
 	public boolean log;
-	public HashMap<String,Integer> u2i =new HashMap<String,Integer>();
+	public LinkedHashMap<String,Integer> u2i =new LinkedHashMap<String,Integer>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
 	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
@@ -48,9 +48,9 @@ public class MessagePasser {
 			return;
 		}
 		log=false;
-		nodeNum = config.getSize();
-		id = config.getId(username);
-		u2i=config.getAllID(username);
+		nodeNum = config.getSize();  // starts from 1;
+		id = config.getId(username); // ID starts from 0, if can't find return -1
+		u2i=config.getAllID();
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
 		logicalTime=lg;

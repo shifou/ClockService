@@ -284,6 +284,51 @@ public class configFileParse {
 				t.set_src("charlie");
 				System.out.println(a.recvRule(t));
 				System.out.println(a.sendRule(t));
-			}   
+			}
+
+
+			public LinkedHashMap<String, Integer> getAllID() {
+				// TODO Auto-generated method stub
+				if(NodeInfo==null)
+				{
+					return null;
+				}
+				LinkedHashMap<String, Integer> nameID = new LinkedHashMap<String, Integer>();
+				int i = 0;
+				for(LinkedHashMap<String,Object> tmp : NodeInfo)
+				{
+					if(!tmp.get("name").equals("Logger")){
+						nameID.put((String) tmp.get("name"), Integer.valueOf(i++));
+					}
+				}
+				return nameID;
+			}
+			
+			public int getId(String username) {
+				// TODO Auto-generated method stub
+				if(NodeInfo==null)
+				{
+					return -1;
+				}
+				int i = 0;
+				for(LinkedHashMap<String,Object> tmp : NodeInfo)
+				{
+					
+					if(!tmp.get("name").equals(username)){
+						return i;
+					}
+					i++;
+				}
+				return -1;
+			}
+			public int getSize()
+			{
+				if(NodeInfo == null)
+				{
+					return 0;
+				}
+				return NodeInfo.size()-1;
+			}
+			
 
 }
