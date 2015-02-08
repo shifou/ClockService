@@ -19,27 +19,16 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp> {
 			Vector = vector;
 		}
 		
-		public int updateTimeStamp(int currentID, int baseID, VectorTimeStamp base) // start from 0
+		public void updateTimeStamp(VectorTimeStamp base) // start from 0
 		{
-			if(currentID >= len || baseID >= len)   // ID exceeds limitation
-			{
-				return -1;
-			}
+			
 			for(int i = 0; i < len; i++)
 			{
-				if(currentID == i||baseID == i )
-				{
-					Vector[i] = Math.max(Vector[i], base.getVector()[i]) + 1;
-				}
-				else
-				{
 					Vector[i] = Math.max(Vector[i], base.getVector()[i]);
-				}
 			}
-			return 1;
 			
 		}
-		public int updateTimeStamp(int currentID)
+		public int Increment(int currentID)
 		{
 			if(currentID<len)
 			{
