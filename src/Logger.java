@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.LinkedHashMap;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,29 +43,15 @@ public class Logger {
 			System.out.println("can not find the user info in config");
 			return;
 		}
+		nodes= config.getNetMap("logger");
 		size = config.getSize();
 		user = new User("logger", port,messageRec,sockets, streams,nodes,logicalTime);
 		new Thread(user).start();
 	
 	}
 	
+
 	
-	public static void main(String[] args) throws IOException {
-		Logger logger = new Logger(args[0], true);
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		while(true)
-		{
-			String command = in.readLine();
-			switch (command) {
-			case "print":
-				printLog(messageRec);																																										
-				break;
-			default:
-				System.err.println("wrong input!");
-				break;
-			}
-		}
-	}
 	private static void printLog(Vector<Message> messageRec)
 	{
 
@@ -99,7 +85,21 @@ public class Logger {
 			
 			
 		}
-			
-		
+	}
+	public static void main(String[] args) throws IOException {
+		Logger logger = new Logger(args[0], true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		while(true)
+		{
+			String command = in.readLine();
+			switch (command) {
+			case "print":
+				printLog(messageRec);																																										
+				break;
+			default:
+				System.err.println("wrong input!");
+				break;
+			}
+		}
 	}
 }

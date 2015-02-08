@@ -15,7 +15,7 @@ public class Manager {
 			messagePasser.log=false;
 			switch(hold[0]){
 				case "send":
-					if(hold.length!=5)
+					if(hold.length!=6)
 					{
 						System.err.println("wrong send command!\n");
 						System.out.println("usage: send#bob#Action#kind#what is your name#y");
@@ -34,6 +34,8 @@ public class Manager {
 					messagePasser.log=true;
 					System.out.println(messagePasser.receive().toString());
 					break;
+				case "print":
+					System.out.println(messagePasser.printTimestamp());
 				default:
 					System.err.println("Illegal input format! Please enter again!");
 				}
