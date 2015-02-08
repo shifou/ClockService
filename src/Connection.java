@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 public class Connection implements Runnable {
 	private Socket socket;
@@ -15,22 +16,27 @@ public class Connection implements Runnable {
 	public Vector<Message> messageRec = new Vector<Message>();
 	private ObjectInputStream objInput;
 	private ObjectOutputStream objOutput;
+	public ConcurrentHashMap<String, Socket> sk;
+	public ConcurrentHashMap<String, ObjectOutputStream> st;
 	public ArrayList<LogicalTimeStamp> logMat;
 	public ArrayList<VectorTimeStamp> vecMat;
 	public boolean logicalTime;
+	public String name;
 	public boolean log;
-	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq) throws IOException {
+	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, ConcurrentLinkedQueue mq) throws IOException {
 		// TODO Auto-generated constructor stub
 		socket = slaveSocket;
 		objOutput = out;
+		this.name=name;
 		objOutput.flush();
 		objInput = objInput2;
 		running=true;
 		log=false;
 		messageQueue=mq;
 	}
-	public Connection(Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, Vector<Message> messageRec,boolean logicalTime) throws IOException 
+	public Connection(String name,Socket slaveSocket, ObjectOutputStream out, ObjectInputStream objInput2, Vector<Message> messageRec,boolean logicalTime) throws IOException 
 	{
+		this.name=name;
 		socket = slaveSocket;
 		objOutput = out;
 		objOutput.flush();
@@ -61,7 +67,9 @@ public class Connection implements Runnable {
 				}
 				catch(EOFException e)
 				{
-					System.out.println("detect disconnected message");
+					sk.remove(name);
+		            st.remove(name);
+					System.out.println("detect disconnected message remove "+name);
 					return;
 				}
 				catch(Exception e)

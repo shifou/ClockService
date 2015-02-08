@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class User implements Runnable{
 	public ServerSocket serverSocket;
 	int port;
-	String name;
+	String username;
 	private volatile boolean running;
 	public ConcurrentLinkedQueue messageQueue;
 	public ConcurrentHashMap<String, Socket> sk;
@@ -35,7 +35,7 @@ public class User implements Runnable{
 		sk = sockets;
 		st= streams;
 		messageQueue=messageRec;
-		this.name=name;
+		this.username=name;
 		running = true;
         try {
          serverSocket = new ServerSocket((short)port);
@@ -54,7 +54,7 @@ public class User implements Runnable{
 		sk = sockets;
 		st= streams;
 		this.messageRec=messageRec;
-		this.name=name;
+		this.username=name;
 		running = true;
         try {
          serverSocket = new ServerSocket((short)port);
@@ -98,9 +98,9 @@ public class User implements Runnable{
             st.put(name, out);
 			Connection handler;
 			if(log==false)
-             handler = new Connection(slaveSocket,out,objInput,messageQueue);
+             handler = new Connection(name,slaveSocket,out,objInput,messageQueue);
 			else
-				handler = new Connection(slaveSocket,out,objInput,this.messageRec,logicalTime);
+				handler = new Connection(name,slaveSocket,out,objInput,this.messageRec,logicalTime);
              //System.out.println(slaveSocket.getInetAddress()+"\t"+slaveSocket.getPort());
 				new Thread(handler).start();
 	           // System.out.println("begin send");
@@ -113,7 +113,7 @@ public class User implements Runnable{
         	  }
         	 catch(IOException e){
         	         e.printStackTrace();
-        	         System.out.println("socket user "+this.name+" accept failed");
+        	         System.out.println("socket user "+this.username+" accept failed");
         	         continue;
         	     }
 		}

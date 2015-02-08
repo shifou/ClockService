@@ -195,7 +195,7 @@ public class MessagePasser {
 				 Connection handler;
 				 out.writeObject(username);
 				 //out.writeChars(this.username);
-	             handler = new Connection(sendd,out,objInput,messageRec);
+	             handler = new Connection(mes.des,sendd,out,objInput,messageRec);
 	             new Thread(handler).start();
 		         
 			} catch (UnknownHostException e) {
