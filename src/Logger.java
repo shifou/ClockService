@@ -1,20 +1,20 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class Logger {
-	public ArrayList<LogicalTimeStamp> logMat = new ArrayList<LogicalTimeStamp>();
-	public ArrayList<VectorTimeStamp> vecMat = new ArrayList<VectorTimeStamp>();
 	public LinkedHashMap<String, nodeInfo> nodes = new LinkedHashMap<String, nodeInfo>();
-	public ConcurrentLinkedQueue<Message> messageRec = new ConcurrentLinkedQueue<Message>();
+	public Vector<Message> messageRec = new Vector<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
 	public boolean logicalTime;
@@ -27,7 +27,12 @@ public class Logger {
 	public Logger(String configuration_filename,boolean lt)
 	{
 		logicalTime=lt;
-		config = new configFileParse(configuration_filename);
+		try {
+			config = new configFileParse(configuration_filename);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		filename = configuration_filename;
 		File hold  = new File(filename);
 		last=hold.lastModified();
@@ -39,17 +44,9 @@ public class Logger {
 			return;
 		}
 		size = config.getSize();
-		for(int i=0;i<size;i++){
-			logMat.add(new LogicalTimeStamp());
-			vecMat.add(new VectorTimeStamp(size));
-		}
-		user = new User("logger", port,messageRec,sockets, streams,nodes,logMat,vecMat,logicalTime);
+		user = new User("logger", port,messageRec,sockets, streams,nodes,logicalTime);
 		new Thread(user).start();
 	
-	}
-	private static void print() {
-		// TODO Auto-generated method stub
-		
 	}
 	public static void main(String[] args) throws IOException {
 		Logger logger = new Logger(args[0], true);
