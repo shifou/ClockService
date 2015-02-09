@@ -49,7 +49,7 @@ public class MessagePasser {
 		}
 		log=false;
 		nodeNum = config.getSize();  // starts from 1;
-		//System.out.println("---"+nodeNum);
+		System.out.println("---"+nodeNum);
 		id = config.getId(username); // ID starts from 0, if can't find return -1
 		if(id==-1)
 		{
@@ -137,6 +137,7 @@ public class MessagePasser {
 		//System.out.println(hold+"-----");
 		
 		mes.id=u2i.get(mes.src);
+		//System.out.println("-----"+mes.id+"\t"+id);
 		mes.logicalTime=this.logicalTime;
 		if(this.logicalTime)
 		{
@@ -146,6 +147,7 @@ public class MessagePasser {
 		else
 		{
 			this.vt.Increment(id);
+			System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
 			mes.vt=this.vt;
 		}
 		//.out.println("???"+this.vt.toString());
@@ -179,6 +181,17 @@ public class MessagePasser {
 			//mes.id=u2i.get(mes.src);
 			mes.src=mes.src+" "+mes.des;
 			mes.des="logger";
+			if(this.logicalTime)
+			{
+				this.lt.Increment();
+				mes.lt=this.lt;
+			}
+			else
+			{
+				this.vt.Increment(id);
+				System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
+				mes.vt=this.vt;
+			}
 			//mes.logicalTime=lt;
 				sendMessage(mes);
 			
@@ -216,7 +229,7 @@ public class MessagePasser {
 		try{
 			//System.out.println("des: "+mes.des);
 		ObjectOutputStream out= streams.get(mes.des);
-		System.out.println("-----------sending "+mes.toString());
+		//System.out.println("-----------sending "+mes.toString());
 		out.writeObject(mes);
 		out.flush();
 		out.reset();
@@ -238,6 +251,17 @@ public class MessagePasser {
 	private void logRecEvent(Message mes) {
 		mes.src=mes.src+" "+mes.des;
 		mes.des="logger";
+		if(this.logicalTime)
+		{
+			this.lt.Increment();
+			mes.lt=this.lt;
+		}
+		else
+		{
+			this.vt.Increment(id);
+			System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
+			mes.vt=this.vt;
+		}
 		sendMessage(mes);
 	}
 	Message receive() throws FileNotFoundException {
@@ -261,10 +285,10 @@ public class MessagePasser {
 				this.vt.Increment(id);
 				mes.vt=this.vt;
 			}
-			System.out.println(log);
+			System.out.println(username+" rec timestamp: "+this.vt.toString());
 			if(log)
 			{
-				System.out.println("-------");
+				//System.out.println("-------");
 				logRecEvent(mes);
 			}
 			return mes;

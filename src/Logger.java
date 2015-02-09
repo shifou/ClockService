@@ -83,7 +83,7 @@ public class Logger {
 		}
 	}
 	public static void main(String[] args) throws IOException {
-		Logger logger = new Logger(args[0], false);
+		Logger logger = new Logger(args[0],false);
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		while(true)
 		{
