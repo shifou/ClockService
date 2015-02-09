@@ -181,19 +181,20 @@ public class MessagePasser {
 			//mes.id=u2i.get(mes.src);
 			mes.src=mes.src+" "+mes.des;
 			mes.des="logger";
-			if(this.logicalTime)
-			{
-				this.lt.Increment();
-				mes.lt=this.lt;
-			}
-			else
-			{
-				this.vt.Increment(id);
-				System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
-				mes.vt=this.vt;
-			}
+			
 			//mes.logicalTime=lt;
 				sendMessage(mes);
+				if(this.logicalTime)
+				{
+					this.lt.Increment();
+					mes.lt=this.lt;
+				}
+				else
+				{
+					this.vt.Increment(id);
+					System.out.println("increase timestamp due to log as: "+username+" with id "+id+" "+this.vt.toString());
+					mes.vt=this.vt;
+				}
 			
 	}
 
@@ -251,6 +252,7 @@ public class MessagePasser {
 	private void logRecEvent(Message mes) {
 		mes.src=mes.src+" "+mes.des;
 		mes.des="logger";
+		sendMessage(mes);
 		if(this.logicalTime)
 		{
 			this.lt.Increment();
@@ -259,10 +261,9 @@ public class MessagePasser {
 		else
 		{
 			this.vt.Increment(id);
-			System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
+			System.out.println("increase timestamp due to log as: "+username+" with id "+id+" "+this.vt.toString());
 			mes.vt=this.vt;
 		}
-		sendMessage(mes);
 	}
 	Message receive() throws FileNotFoundException {
 		//System.out.println(log);
