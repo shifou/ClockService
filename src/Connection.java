@@ -57,7 +57,8 @@ public class Connection implements Runnable {
 			while (running) {
 				try {
 					mes = (Message) objInput.readObject();
-					//System.out.println("socket rec: "+mes.toString());
+					if(log)
+					System.out.println("logger rec: "+mes.toString());
 					if(log==false)
 						messageQueue.offer(mes);
 					else

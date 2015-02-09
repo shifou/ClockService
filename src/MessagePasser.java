@@ -49,6 +49,7 @@ public class MessagePasser {
 		}
 		log=false;
 		nodeNum = config.getSize();  // starts from 1;
+		//System.out.println("---"+nodeNum);
 		id = config.getId(username); // ID starts from 0, if can't find return -1
 		if(id==-1)
 		{
@@ -59,10 +60,12 @@ public class MessagePasser {
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
 		logicalTime=lg;
+		System.out.println(logicalTime);
 		if(this.logicalTime)
 			 lt =new LogicalTimeStamp();
 		else
 			vt = new VectorTimeStamp(nodeNum);
+		//System.out.println(vt.toString());
 		user = new User(username, port,messageRec,sockets, streams,nodes);
 		new Thread(user).start();
 	}
@@ -145,6 +148,8 @@ public class MessagePasser {
 			this.vt.Increment(id);
 			mes.vt=this.vt;
 		}
+		System.out.println("???"+this.vt.toString());
+		
 		switch(hold){
 			case "drop":
 				System.out.println("drop");
