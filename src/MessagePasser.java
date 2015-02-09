@@ -49,7 +49,7 @@ public class MessagePasser {
 		}
 		log=false;
 		nodeNum = config.getSize();  // starts from 1;
-		//System.out.println("---"+nodeNum);
+		System.out.println("---"+nodeNum);
 		id = config.getId(username); // ID starts from 0, if can't find return -1
 		if(id==-1)
 		{
@@ -146,6 +146,7 @@ public class MessagePasser {
 		else
 		{
 			this.vt.Increment(id);
+			System.out.println("send timestamp from: "+username+" "+id+" "+this.vt.toString());
 			mes.vt=this.vt;
 		}
 		//.out.println("???"+this.vt.toString());
@@ -216,7 +217,7 @@ public class MessagePasser {
 		try{
 			//System.out.println("des: "+mes.des);
 		ObjectOutputStream out= streams.get(mes.des);
-		System.out.println("-----------sending "+mes.toString());
+		//System.out.println("-----------sending "+mes.toString());
 		out.writeObject(mes);
 		out.flush();
 		out.reset();
@@ -261,10 +262,10 @@ public class MessagePasser {
 				this.vt.Increment(id);
 				mes.vt=this.vt;
 			}
-			System.out.println(log);
+			System.out.println(username+" rec timestamp: "+this.vt.toString());
 			if(log)
 			{
-				System.out.println("-------");
+				//System.out.println("-------");
 				logRecEvent(mes);
 			}
 			return mes;

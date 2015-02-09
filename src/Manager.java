@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 public class Manager {
 	public static void main(String[] args) throws IOException, InterruptedException{
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		MessagePasser messagePasser = new MessagePasser(args[0], args[1],true);
+		MessagePasser messagePasser = new MessagePasser(args[0], args[1],false);
 		int seq=0;
 		while(true){
 			System.out.println("Enter the command : send or rec");
