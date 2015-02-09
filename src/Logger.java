@@ -66,18 +66,19 @@ public class Logger {
 		
 		for(int i = 0; i < len; i++)
 		{
-			System.out.print(messageRec.get(i).toString() + "\t\t");
+			System.out.println(messageRec.get(i).toString());
+			
 			for(int j = 0; j < len; j++)
 			{
 				if(j != i)
 				{
 					if(messageRec.get(i).compareTo(messageRec.get(j)) == 0)
 					{
-						System.out.print(messageRec.get(j).toString());
+						System.out.println("\t\t\t\t"+messageRec.get(j).toString());
 					}
 				}
 			}
-			System.out.println("");
+			System.out.println("*************************************************\n");
 			
 			
 		}
