@@ -239,7 +239,9 @@ public class MessagePasser {
 		System.out.println("reread: "+reconfig());
 
 		receiveMessage();
-		if(!messages.isEmpty()){
+		if(!messages.isEmpty())
+		{
+			//System.out.println("check queue: "+messages.isEmpty());
 			Message mes = messages.poll();
 			if(mes.logicalTime)
 			{

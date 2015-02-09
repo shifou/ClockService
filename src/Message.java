@@ -23,6 +23,8 @@ public class Message implements Comparable<Message>,Serializable{
 		this.action=action;
 		this.kind = kind;
 		this.data = data;
+		lt=new LogicalTimeStamp();
+		vt = new VectorTimeStamp(1);
 	}
 	/*
 	public Message(String hostname,int id, String dest, String action, String kind, String data, VectorTimeStamp vt){
