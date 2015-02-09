@@ -211,6 +211,7 @@ public class MessagePasser {
 		try{
 			//System.out.println("des: "+mes.des);
 		ObjectOutputStream out= streams.get(mes.des);
+		System.out.println("-----------sending "+mes.toString());
 		out.writeObject(mes);
 		out.flush();
 		out.reset();
