@@ -83,7 +83,7 @@ public class Message implements Comparable<Message>,Serializable{
 		}
 		if(counter == len)
 		{
-			return 1; 			// return 1 if happened before
+			return -1; 			// return 1 if happened before
 		}
 		counter = 0;
 		for(int i = 0; i < len; i++)
@@ -95,7 +95,7 @@ public class Message implements Comparable<Message>,Serializable{
 		}
 		if(counter == len)
 		{
-			return -1;			// return -1 if happened after
+			return 1;			// return -1 if happened after
 		}
 		
 		return 0;				// return 0 if concurrent

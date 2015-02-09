@@ -314,14 +314,14 @@ public class configFileParse {
 				for(LinkedHashMap<String,Object> tmp : NodeInfo)
 				{
 					
-					if(!tmp.get("name").equals(username)){
+					if(tmp.get("name").equals(username)){
 						return i;
 					}
 					i++;
 				}
 				return -1;
 			}
-			public int getSize()
+			public int getSize()    // Number of nodes without Logger
 			{
 				if(NodeInfo == null)
 				{
