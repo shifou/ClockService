@@ -30,8 +30,9 @@ public class Manager {
 				case "rec":
 					System.out.println(messagePasser.receive().toString());
 					break;
-				case "rec#":
+				case "lrec":
 					messagePasser.log=true;
+					//System.out.println(messagePasser.log);
 					System.out.println(messagePasser.receive().toString());
 					break;
 				case "print":

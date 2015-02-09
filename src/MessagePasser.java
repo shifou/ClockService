@@ -60,7 +60,7 @@ public class MessagePasser {
 		nodes= config.getNetMap(username);
 		//sockets = getSocketMap(nodes);
 		logicalTime=lg;
-		System.out.println(logicalTime);
+		//System.out.println(logicalTime);
 		if(this.logicalTime)
 			 lt =new LogicalTimeStamp();
 		else
@@ -148,7 +148,7 @@ public class MessagePasser {
 			this.vt.Increment(id);
 			mes.vt=this.vt;
 		}
-		System.out.println("???"+this.vt.toString());
+		//.out.println("???"+this.vt.toString());
 		
 		switch(hold){
 			case "drop":
@@ -241,8 +241,9 @@ public class MessagePasser {
 		sendMessage(mes);
 	}
 	Message receive() throws FileNotFoundException {
+		//System.out.println(log);
+		
 		System.out.println("reread: "+reconfig());
-
 		receiveMessage();
 		if(!messages.isEmpty())
 		{
@@ -260,8 +261,10 @@ public class MessagePasser {
 				this.vt.Increment(id);
 				mes.vt=this.vt;
 			}
+			System.out.println(log);
 			if(log)
 			{
+				System.out.println("-------");
 				logRecEvent(mes);
 			}
 			return mes;
