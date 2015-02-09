@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 
-public class Message implements Serializable{
+public class Message implements Comparable<Message>,Serializable{
 	
 
 	private static final long serialVersionUID = 2190639673375742282L;
@@ -67,5 +67,36 @@ public class Message implements Serializable{
 		// TODO Auto-generated method stub
 		return kind;
 	}
-	
+	public int compareTo(Message o) {
+		// TODO Auto-generated method stub
+		int len = this.vt.getVector().length;
+		int counter = 0;
+		
+		for(int i = 0; i < len; i++)
+		{
+			if(o.vt.getVector()[i] >= this.vt.getVector()[i])
+			{
+				counter ++;
+			}
+		}
+		if(counter == len)
+		{
+			return 1; 			// return 1 if happened before
+		}
+		counter = 0;
+		for(int i = 0; i < len; i++)
+		{
+			if(o.vt.getVector()[i] <= this.vt.getVector()[i])
+			{
+				counter ++;
+			}
+		}
+		if(counter == len)
+		{
+			return -1;			// return -1 if happened after
+		}
+		
+		return 0;				// return 0 if concurrent
+		
+	}
 }

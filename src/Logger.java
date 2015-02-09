@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList; 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,49 +53,33 @@ public class Logger {
 	
 
 	
-	private static void printLog(Vector<Message> messageRec)
+	private static void printLog(Vector<Message> messRecv)
 	{
-
-		if(messageRec == null || messageRec.size() == 0)
+		
+		
+		
+		if(messRecv == null || messRecv.size() == 0)
 		{
 			System.out.println("Nothing has been logged!");
 		}
-		int len = messageRec.size();
+		int len = messRecv.size();
+		ArrayList<Message> messageRec = new ArrayList<Message>(messRecv);
+		Collections.sort(messageRec);
 		
 		for(int i = 0; i < len; i++)
 		{
-			ArrayList<Message> happenedBefore = new ArrayList<Message>();
-			ArrayList<Message> concurrent = new ArrayList<Message>();
-			ArrayList<Message> happenedAfter = new ArrayList<Message>();
+			System.out.print(messageRec.get(i).toString() + "\t\t");
 			for(int j = 0; j < len; j++)
 			{
 				if(j != i)
 				{
-					if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==1 )
+					if(messageRec.get(i).compareTo(messageRec.get(j)) == 0)
 					{
-						happenedBefore.add(messageRec.get(j));
-					}else if(messageRec.get(i).vt.compareTo(messageRec.get(j).vt) ==-1)
-					{
-						happenedAfter.add(messageRec.get(i));
-					}else{
-						concurrent.add(messageRec.get(i));
+						System.out.print(messageRec.get(j).toString());
 					}
 				}
-				
 			}
-			System.out.println("CurrentMessage:\t"+messageRec.get(i));
-			if(happenedBefore != null)
-			{
-				System.out.println("\t\tHappened Before:\t\t" + happenedBefore);
-			}
-			if(concurrent != null){
-				System.out.println("\t\tConcurrent:\t\t" + concurrent);
-			}
-			if(happenedAfter != null)
-			{
-				System.out.println("\t\tHappened After:\t\t" + happenedAfter);
-			}
-			
+			System.out.println("");
 			
 			
 		}
