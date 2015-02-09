@@ -59,9 +59,9 @@ public class Message implements Comparable<Message>,Serializable{
 	public String toString()
 	{
 		if(logicalTime)
-			return src+" to "+des+" "+seq+" "+lt.toString()+" act: "+action+" "+kind+" dup: "+duplicate+" "+data; 
+			return src+" to "+des+" "+seq+" "+lt.toString()+" act: "+action+"kind: "+kind+" dup: "+duplicate+"Data: "+data; 
 		else
-			return src+" to "+des+" "+seq+" "+vt.toString()+" act: "+action+" "+kind+" dup: "+duplicate+" "+data; 
+			return src+" to "+des+" "+seq+" "+vt.toString()+" act: "+action+"kind: "+kind+" dup: "+duplicate+"Data: "+data; 
 		
 	}
 

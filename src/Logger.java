@@ -56,8 +56,6 @@ public class Logger {
 	private static void printLog(Vector<Message> messRecv)
 	{
 		
-		
-		
 		if(messRecv == null || messRecv.size() == 0)
 		{
 			System.out.println("Nothing has been logged!");

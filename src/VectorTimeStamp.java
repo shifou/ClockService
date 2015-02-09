@@ -12,6 +12,10 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp>,Serializable
 		{
 			Vector = new int[size];
 			len = size;
+			for(int i= 0; i<len;i++)
+			{
+				Vector[i] = 0;
+			}
 		}
 
 		public int[] getVector() {
@@ -91,7 +95,13 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp>,Serializable
 		// TODO:  add resize the Vector
 		public String toString()
 		{
-			return Arrays.toString(Vector);
+			String t = new String();
+			for(int i = 0; i < len; i++)
+			{
+				t = Vector[i] + " ";
+			}
+			
+			return t;
 		}
 
 }
