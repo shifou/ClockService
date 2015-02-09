@@ -137,6 +137,7 @@ public class MessagePasser {
 		//System.out.println(hold+"-----");
 		
 		mes.id=u2i.get(mes.src);
+		//System.out.println("-----"+mes.id+"\t"+id);
 		mes.logicalTime=this.logicalTime;
 		if(this.logicalTime)
 		{
@@ -146,7 +147,7 @@ public class MessagePasser {
 		else
 		{
 			this.vt.Increment(id);
-			System.out.println("send timestamp from: "+username+" "+id+" "+this.vt.toString());
+			System.out.println("send timestamp from: "+username+" with id "+id+" "+this.vt.toString());
 			mes.vt=this.vt;
 		}
 		//.out.println("???"+this.vt.toString());

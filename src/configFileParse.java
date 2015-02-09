@@ -314,7 +314,7 @@ public class configFileParse {
 				for(LinkedHashMap<String,Object> tmp : NodeInfo)
 				{
 					
-					if(!tmp.get("name").equals(username)){
+					if(tmp.get("name").equals(username)){
 						return i;
 					}
 					i++;
