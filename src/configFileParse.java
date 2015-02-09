@@ -327,7 +327,7 @@ public class configFileParse {
 				{
 					return 0;
 				}
-				return NodeInfo.size();
+				return NodeInfo.size()-1;
 			}
 			
 

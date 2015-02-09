@@ -98,7 +98,7 @@ public class VectorTimeStamp implements Comparable<VectorTimeStamp>,Serializable
 			String t = new String();
 			for(int i = 0; i < len; i++)
 			{
-				t = Vector[i] + " ";
+				t = t + Vector[i] + ",";
 			}
 			
 			return t;
