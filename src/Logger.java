@@ -18,7 +18,7 @@ public class Logger {
 	public static Vector<Message> messageRec = new Vector<Message>();
 	public ConcurrentHashMap<String, Socket> sockets = new ConcurrentHashMap<String, Socket>();
 	public ConcurrentHashMap<String, ObjectOutputStream> streams= new ConcurrentHashMap<String, ObjectOutputStream>();
-	public boolean logicalTime;
+	public boolean logicalTime ;
 	public String filename;
 	public long last;
 	public User user;
