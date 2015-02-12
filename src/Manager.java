@@ -37,6 +37,7 @@ public class Manager {
 					break;
 				case "print":
 					System.out.println(messagePasser.printTimestamp());
+					break;
 				default:
 					System.err.println("Illegal input format! Please enter again!");
 				}
