@@ -286,7 +286,7 @@ public class MessagePasser {
 				this.vt.Increment(id);
 				mes.vt=this.vt;
 			}
-			System.out.println(username+" rec timestamp: "+this.vt.toString());
+			//System.out.println(username+" rec timestamp: "+this.vt.toString());
 			if(log)
 			{
 				//System.out.println("-------");
